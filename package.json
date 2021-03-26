@@ -2,7 +2,7 @@
   "name": "robo-friends",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/Pedginald/robo-friends",
+  "homepage": "https://pedginald.github.io/robo-friends",
   "dependencies": {
     "-": "0.0.1",
     "@testing-library/jest-dom": "^5.11.9",
