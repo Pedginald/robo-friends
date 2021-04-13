@@ -1,37 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import { Component } from 'react';
+import { connect } from 'react-redux';
 import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
 import ErrorBoundary from '../components/ErrorBoundary';
 import './App.css';
+import { setSearchfield } from '../actions';
 
-function App() {
-   /* constructor() {
+const mapStateToProps = state => {
+    return {
+        searchField: state.searchField
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSearchChange: (event) => dispatch(setSearchfield(event.target.value))
+    }
+}
+
+class App extends Component {
+    constructor() {
         super()
         this.state = {
             robots: [],
             searchfield: ''
         }
-    } */
-    const [robots, setRobots] = useState([])
-    const [searchfield, setSearchfield] = useState('')
-
-/* componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-    .then(response => response.json())
-    .then(users => {this.setState({ robots: users })});
-} */
-useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-        .then(response => response.json())
-        .then(users => {setRobots(users)});
-}, [])
-
-    const onSearchChange = (event) => {
-        setSearchfield(event.target.value)
     }
+
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then(response => response.json())
+            .then(users => {this.setState({ robots: users })});
+    }
+
+    render() {
+        const { robots } = this.state;
+        const { searchField, onSearchChange } = this.props;
         const filteredRobots = robots.filter(robot => {
-            return robot.name.toLowerCase().includes(searchfield.toLowerCase());
+            return robot.name.toLowerCase().includes(searchField.toLowerCase());
         })
         return !robots.length ?
             <h1>Loading...</h1> :
@@ -47,5 +54,7 @@ useEffect(() => {
             </div>
         );
     }
+}
 
-export default App;
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
